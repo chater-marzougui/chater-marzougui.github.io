@@ -5,20 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     
-    <!-- Instant redirect -->
-    <meta http-equiv="refresh" content="0; url=https://chater-marzougui.me/Portfolio/">
+    <!-- No meta refresh - using smart JavaScript redirect -->
     
     <!-- Canonical URL for SEO -->
     <link rel="canonical" href="https://chater-marzougui.me/Portfolio/">
     <meta name="google-site-verification" content="NDXR87VOwBdFickOLBwWlaXMLvKi93YNUaTkYvkih0U" />
 </head>
+<body>
     <script>
-        // Fallback JavaScript redirect (in case meta refresh fails)
-        setTimeout(() => {
-            if (window.location.pathname === '/') {
-                window.location.href = 'https://chater-marzougui.me/Portfolio/';
+        // Smart redirect logic
+        (function() {
+            // Get the referrer (where the user came from)
+            const referrer = document.referrer;
+            
+            // Check if user came from chater-marzougui.me domain
+            const cameFromPortfolio = referrer.includes('chater-marzougui.me');
+            
+            // Define the end date for temporary redirect (15/10/2025 23:59:59 UTC)
+            const redirectEndDate = new Date('2025-10-15T23:59:59Z');
+            const currentDate = new Date();
+            
+            // Default URLs
+            const portfolioUrl = 'https://chater-marzougui.me/Portfolio/';
+            const herokuUrl = 'https://wie-act-1faad7d7a3cf.herokuapp.com/';
+            
+            // Determine redirect URL
+            let redirectUrl;
+            
+            if (cameFromPortfolio) {
+                // If user came from portfolio domain, always send to portfolio
+                redirectUrl = portfolioUrl;
+            } else if (currentDate < redirectEndDate) {
+                // If before Oct 15, 2025, redirect to Heroku app
+                redirectUrl = herokuUrl;
+            } else {
+                // After Oct 15, 2025, redirect to portfolio
+                redirectUrl = portfolioUrl;
             }
-        }, 50);
+            
+            // Perform the redirect
+            window.location.href = redirectUrl;
+        })();
     </script>
+    <noscript>
+        <!-- Fallback for users with JavaScript disabled -->
+        <meta http-equiv="refresh" content="0; url=https://chater-marzougui.me/Portfolio/">
+        <p>Redirecting... <a href="https://chater-marzougui.me/Portfolio/">Click here if you are not redirected</a></p>
+    </noscript>
 </body>
 </html>
